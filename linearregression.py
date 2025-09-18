@@ -11,18 +11,21 @@ X_b = np.c_[np.ones((X.shape[0], 1)), X]
 
 theta = np.random.randn(X_b.shape[1], 1)
 alpha = 0.0001
-epochs = 500
+epochs = 1000
 m = len(y)
 
 def compute_cost(X, y, theta):
     return (1/(2*m)) * np.sum((X.dot(theta) - y)**2)
 
 initial_theta = theta.copy()
-initial_cost = compute_cost(X_b, y, theta)
+initial_cost = [-0.53877724,  1.5287602,  0.76063358]
+
+cost_history = []
 
 for _ in range(epochs):
     gradients = (1/m) * X_b.T.dot(X_b.dot(theta) - y)
     theta -= alpha * gradients
+    cost_history.append(compute_cost(X_b, y, theta))
 
 final_cost = compute_cost(X_b, y, theta)
 
@@ -32,3 +35,9 @@ print("Epochs:", epochs)
 print("Starting Cost:", initial_cost)
 print("Final Parameters:", theta.flatten())
 print("Final Cost:", final_cost)
+
+plt.plot(range(epochs), cost_history)
+plt.xlabel("Epochs")
+plt.ylabel("Cost")
+plt.title("Cost Reduction Over Epochs")
+plt.show()
